@@ -1,0 +1,5 @@
+playwright==1.50.0
+# scrapy==2.9.0
+# twisted[platform]<24.0.0
+# Twisted==22.10.0
+# scrapy-playwright==1.50.0
