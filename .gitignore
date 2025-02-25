@@ -1,4 +1,3 @@
 venv/
-app_surtidos/
-# data/raw/
-# data/processed/
+data/raw/
+data/processed/
