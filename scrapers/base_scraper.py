@@ -2,20 +2,23 @@ import logging
 import time
 import json
 from datetime import datetime
-from typing import List, Any
+from typing import List, Dict, Any
 from abc import ABC, abstractmethod
 
 from playwright.sync_api import sync_playwright, Page
+
+from utils import api
 
 logging.basicConfig(level=logging.INFO)
 
 
 class BaseScrapper(ABC):
-    def __init__(self, url: str, wait_time: int = 3, save_in_json: bool = False):
+    def __init__(self, url: str, wait_time: int = 3, save_in_json: bool = False, send_to_backend: bool = False):
         self.url = url
         self.wait_time = wait_time
         self.save_in_json = save_in_json
-        self.data: List[Any] = []
+        self.send_to_backend = send_to_backend
+        self.data: List[Dict[str, Any]] = []
 
     @abstractmethod
     def parse(self, page: Page):
@@ -38,8 +41,16 @@ class BaseScrapper(ABC):
             logging.info("Extracting data...")
             self.parse(page)
 
-            logging.info("Saving data in JSON...")
-            self.save_to_json()
+            if self.data:
+                if self.save_in_json:
+                    logging.info("Saving data in JSON...")
+                    self.save_to_json()
+                else:
+                    print(self.data)
+
+                if self.send_data_to_backend:
+                    logging.info("Send data to Backend...")
+                    self.send_data_to_backend()
 
             browser.close()
             logging.info("End.")
@@ -51,10 +62,6 @@ class BaseScrapper(ABC):
 
     def save_to_json(self):
         """Guarda los datos extraídos en un archivo JSON."""
-        if not self.save_in_json:
-            print(self.data)
-            return
-
         output_file = f"data/raw/{self.__class__.__name__}_{datetime.now().strftime('%Y%m%d_%H:%M')}.json"
 
         json_data = {
@@ -66,3 +73,6 @@ class BaseScrapper(ABC):
 
         with open(output_file, "w", encoding="utf-8") as file:
             json.dump(json_data, file, ensure_ascii=False, indent=4)
+
+    def send_data_to_backend(self):
+        return api.send_data_to_backend(self.data)

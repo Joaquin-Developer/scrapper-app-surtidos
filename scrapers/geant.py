@@ -2,10 +2,15 @@ from base_scraper import BaseScrapper, Page
 
 
 class Geant(BaseScrapper):
+    SUPERMARKET_CHAIN_ID = 1
+
     def parse(self, page: Page):
         articles = page.query_selector_all(
             ".vtex-product-summary-2-x-element.pointer.pt3.pb4.flex.flex-column.h-100"
         )
+
+        # TODO permitir ean null en el backend
+        ean = 1111
 
         for article in articles:
             name = article.query_selector(".vtex-product-summary-2-x-productBrand").inner_text()
@@ -16,10 +21,14 @@ class Geant(BaseScrapper):
             price = price.inner_text().replace("\n", " ") if price else None
 
             self.data.append({
+                "ean": str(ean),
                 "name": name,
-                "price": price,
-                "image_link": image_link
+                "imageLink": image_link,
+                "currency": price.split(" ")[0],
+                "price": price.split(" ")[1],
+                "supermarketChainId": self.SUPERMARKET_CHAIN_ID,
             })
+            ean += 1
 
 
 if __name__ == "__main__":
