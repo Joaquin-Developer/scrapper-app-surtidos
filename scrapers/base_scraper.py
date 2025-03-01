@@ -1,13 +1,22 @@
 import logging
 import time
 import json
+import sys
+import os
+
 from datetime import datetime
 from typing import List, Dict, Any
 from abc import ABC, abstractmethod
 
 from playwright.sync_api import sync_playwright, Page
 
-from utils import api
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+
+try:
+    from utils import api
+except ImportError:
+    from ..utils import api
 
 logging.basicConfig(level=logging.INFO)
 

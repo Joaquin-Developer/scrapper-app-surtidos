@@ -10,6 +10,7 @@ def send_data_to_backend(products: List[Dict[str, Any]]):
     url = f"{API_URL}/api/products/batch"
     headers = {"Content-Type": "application/json"}
 
-    req = requests.post(url, products, headers=headers)
-    if req.status_code() != 200:
-        raise Exception(f"error send_data_to_backend, {str(req.json())}")
+    req = requests.post(url=url, json=products, headers=headers)
+
+    if req.status_code not in (200, 201):
+        raise Exception(f"error send_data_to_backend, {str(req.content)}")
