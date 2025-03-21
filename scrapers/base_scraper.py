@@ -12,7 +12,6 @@ from playwright.sync_api import sync_playwright, Page
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-
 try:
     from utils import api
 except ImportError:
@@ -106,7 +105,7 @@ class BaseScrapper(ABC):
 
         self.save_to_json()
 
-        if self.data and self.send_data_to_backend:
+        if self.data and self.send_to_backend:
             logging.info("Send data to Backend...")
             self.send_data_to_backend()
         logging.info("End.")

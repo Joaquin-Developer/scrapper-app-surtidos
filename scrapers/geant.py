@@ -1,6 +1,11 @@
 from typing import List, Dict, Any
 
-from base_scraper import BaseScrapper, Page
+try:
+    from scrapers.base_scraper import BaseScrapper, Page
+except ImportError:
+    from base_scraper import BaseScrapper, Page
+
+from config import config
 
 
 class Geant(BaseScrapper):
@@ -33,8 +38,12 @@ class Geant(BaseScrapper):
 if __name__ == "__main__":
     domain = "https://www.geant.com.uy"
     urls = [
-        "/frescos/congelados/pre-fritos-rebozados",
-        "/frescos/congelados/pescados-congelados",
+        # "/frescos/congelados/pescados-congelados",
+        "/frescos",
+        "/bebidas",
+        "/almacen",
+        "/perfumeria-y-limpieza/limpieza",
     ]
-    scraper = Geant(domain, urls, save_in_json=True)
+    is_test = config.DEBUG
+    scraper = Geant(domain=domain, urls=urls, save_in_json=True, send_to_backend=(not is_test))
     scraper.run()
