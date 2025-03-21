@@ -45,6 +45,5 @@ if __name__ == "__main__":
         "/perfumeria-y-limpieza/limpieza",
     ]
     is_test = config.DEBUG
-    print("is_test", not is_test)
     scraper = Geant(domain=domain, urls=urls, save_in_json=True, send_to_backend=(not is_test))
     scraper.run()
