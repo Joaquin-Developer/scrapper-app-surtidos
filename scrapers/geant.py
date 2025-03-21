@@ -1,6 +1,7 @@
 from typing import List, Dict, Any
 
 from base_scraper import BaseScrapper, Page
+from config import config
 
 
 class Geant(BaseScrapper):
@@ -36,5 +37,6 @@ if __name__ == "__main__":
         "/frescos/congelados/pre-fritos-rebozados",
         "/frescos/congelados/pescados-congelados",
     ]
-    scraper = Geant(domain, urls, save_in_json=True)
+    is_test = config.DEBUG
+    scraper = Geant(domain, urls, save_in_json=(not is_test), send_to_backend=(not is_test))
     scraper.run()

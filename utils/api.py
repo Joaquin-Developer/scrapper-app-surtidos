@@ -1,29 +1,20 @@
-import os
-from typing import List, Dict, Tuple, Any
+from typing import List, Dict, Any
 
 import requests
 
-# TODO mejorar la config y diferenciar env test/prod
-API_URL = "http://localhost:8081"
-
-
-def get_credentials() -> Tuple[str, str]:
-    user = os.getenv("API_USERNAME")
-    password = os.getenv("API_PASSWORD")
-    return user, password
+from config import config
 
 
 def get_api_token() -> str:
-    url = f"{API_URL}/auth/login"
-    username, password = get_credentials()
-    payload = {"username": username, "password": password}
+    url = f"{config.API_URL}/auth/login"
+    payload = {"username": config.API_USERNAME, "password": config.API_PASSWORD}
     headers = {"Content-Type": "application/json"}
     response = requests.post(url=url, json=payload, headers=headers)
     return response.text
 
 
 def send_data_to_backend(products: List[Dict[str, Any]]):
-    url = f"{API_URL}/api/products/batch"
+    url = f"{config.API_URL}/api/products/batch"
     headers = {
         "Content-Type": "application/json",
         "Authorization": f"Bearer {get_api_token()}"
