@@ -38,5 +38,5 @@ if __name__ == "__main__":
         "/frescos/congelados/pescados-congelados",
     ]
     is_test = config.DEBUG
-    scraper = Geant(domain, urls, save_in_json=(not is_test), send_to_backend=(not is_test))
+    scraper = Geant(domain, urls, save_in_json=True, send_to_backend=(not is_test))
     scraper.run()
