@@ -105,7 +105,7 @@ class BaseScrapper(ABC):
 
         self.save_to_json()
 
-        if self.data and self.send_data_to_backend:
+        if self.data and self.send_to_backend:
             logging.info("Send data to Backend...")
             self.send_data_to_backend()
         logging.info("End.")
