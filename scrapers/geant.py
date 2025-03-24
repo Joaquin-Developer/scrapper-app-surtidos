@@ -9,7 +9,18 @@ from config import config
 
 
 class Geant(BaseScrapper):
-    SUPERMARKET_CHAIN_ID = 1
+    def __init__(self):
+        domain = "https://www.geant.com.uy"
+        urls = [
+            # "/frescos/congelados/pescados-congelados",
+            "/frescos",
+            "/bebidas",
+            "/almacen",
+            "/perfumeria-y-limpieza/limpieza",
+        ]
+        is_test = config.DEBUG
+        super().__init__(domain=domain, urls=urls, save_in_json=True, send_to_backend=(not is_test))
+        self.SUPERMARKET_CHAIN_ID = 1
 
     def parse(self, page: Page) -> List[Dict[str, Any]]:
         data = []
@@ -36,14 +47,4 @@ class Geant(BaseScrapper):
 
 
 if __name__ == "__main__":
-    domain = "https://www.geant.com.uy"
-    urls = [
-        # "/frescos/congelados/pescados-congelados",
-        "/frescos",
-        "/bebidas",
-        "/almacen",
-        "/perfumeria-y-limpieza/limpieza",
-    ]
-    is_test = config.DEBUG
-    scraper = Geant(domain=domain, urls=urls, save_in_json=True, send_to_backend=(not is_test))
-    scraper.run()
+    Geant().run()
